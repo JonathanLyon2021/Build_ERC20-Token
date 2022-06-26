@@ -29,4 +29,24 @@ interface Token{
      function transfer(address _to, uint256 _value) external returns (bool didOperationSucceed);
 
      function  approve(address _spender, uint256 _value) external returns (bool didOperationSucceed);
+
+     /*@notice - Moves amount tokens from sender to receipient using the allowance mechanism, 
+     amount is then deducted from the caller's allowance.
+     @param _from - The account source to get the tokens _from
+     @param _to - The destination account which will receive the tokens
+     @param _value - The intended value of the tokens to be transferred
+     @return didOperationSucceed - Returns a boolean value indicating wether the operation succeeded.
+    */
+    
+    function transferFrom(address _from, address _to, uint256 _value)
+    external
+    returns (bool didOperationSucceed);
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
+    event Approval(
+        address indexed owner,
+        address indexed spender,
+        uint256 _value
+    );
 }
