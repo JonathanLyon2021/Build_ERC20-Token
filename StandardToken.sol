@@ -40,5 +40,25 @@ contract StandardToken is Token {
     return true;
     }
 
+    function approve(address _spender, uint256 _value) public override returns (bool) {
+        require(_spender != address(0));
+
+        _allowed[msg.sender][_spender] = _value;
+        emit Approval(msg.sender, _spender, _value);
+        return true;
+    }
+
+    function transferFrom(address _from, address _to, uint256 _value) public override returns (bool){
+        require(_value <= _balances[_from]);
+        require(_value <= _allowed[_from][msg.sender]);
+        require(_to != address(0));
+        require(_balances[_to] + _value > 0);
+
+        _balances[_from] -= _value;
+        _allowed[_from][msg.sender] -= _value;
+        _balances[_to] += _value;
+        emit Transfer(_from, _to, _value);
+        return true;
+    }
 
 }
