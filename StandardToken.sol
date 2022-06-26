@@ -16,4 +16,29 @@ contract StandardToken is Token {
     function totalSupply() external view override returns (uint256 supply) {
         return _totalSupply;
     }
+
+    function balanceOf(address _owner) public view override returns (uint256) {
+        return _balances[_owner];
+    }
+
+    function allowance(address _owner, address _spender) public view override returns (uint256){
+        return _allowed[_owner][_spender];
+    }
+
+    function transfer(address _to, uint256 _value) public override returns (bool) {
+        require(_value <= _balances[msg.sender]);
+        require(_to != address(0));
+    /**
+    *If your token leaves out 'totalSupply' and can issue more tokens as time goes on,
+    * you need to check that your values don't wrap/overflow.
+    */
+    require(_balances[_to] + _value > 0);
+
+    _balances[msg.sender] -= _value;
+    _balances[_to] += _value;
+    emit Transfer(msg.sender, _to, _value);
+    return true;
+    }
+
+
 }
